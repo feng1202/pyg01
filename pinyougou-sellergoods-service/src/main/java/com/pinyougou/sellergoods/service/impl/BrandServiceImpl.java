@@ -1,6 +1,7 @@
 package com.pinyougou.sellergoods.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,10 +22,10 @@ public class BrandServiceImpl implements BrandService {
 	@Autowired
 	private TbBrandMapper brandMapper;
 
-
 	// 查询所有品牌
 	@Override
 	public List<TbBrand> findAll() {
+
 		return brandMapper.selectByExample(null);
 	}
 
@@ -64,20 +65,20 @@ public class BrandServiceImpl implements BrandService {
 		}
 
 	}
-	
+
 	@Override
 	public PageResult findPage(TbBrand brand, int pageNum, int pageSize) {
 		// 分页
 		PageHelper.startPage(pageNum, pageSize);
 		TbBrandExample example = new TbBrandExample();
 		Criteria criteria = example.createCriteria();
-		//判断品牌是否为空
+		// 判断品牌是否为空
 		if (brand != null) {
-			//判断查找条件 品牌是否为空
+			// 判断查找条件 品牌是否为空
 			if (brand.getName() != null && brand.getName().length() > 0) {
 				criteria.andNameLike("%" + brand.getName() + "%");
 			}
-			//判断查找条件 首字母是否为空
+			// 判断查找条件 首字母是否为空
 			if (brand.getFirstChar() != null && brand.getFirstChar().length() > 0) {
 				criteria.andFirstCharLike("%" + brand.getFirstChar() + "%");
 			}
@@ -88,5 +89,10 @@ public class BrandServiceImpl implements BrandService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Override
+	public List<Map> selectOptionList() {
+		
+		return brandMapper.selectOptionList();
+	}
 
 }
